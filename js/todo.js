@@ -13,13 +13,21 @@ function saveToDos() {
 function deleteToDo(event) {
   // 클릭 이벤트가 일어난 버튼 요소의 부모 요소 반환
   const li = event.target.parentElement;
+
+  // function sexyFilter(toDo) {
+  //   return toDo.id !== li.id
+  // }
+  // toDos = toDos.filter(sexyFilter);
+  toDos = toDos.filter((toDo) => toDo.id !== parseInt(li.id));
   li.remove();
+  saveToDos();
 }
 
 function paintToDo(newTodo) {
   const li = document.createElement("li");
+  li.id = newTodo.id;
   const span = document.createElement("span");
-  span.innerText = newTodo;
+  span.innerText = newTodo.text;
   const btn = document.createElement("button");
   btn.innerText = "❌";
   btn.addEventListener("click", deleteToDo);
@@ -33,8 +41,12 @@ function handleToDoSubmit(event) {
   event.preventDefault();
   const newTodo = toDoInput.value;
   toDoInput.value = "";
-  toDos.push(newTodo);
-  paintToDo(newTodo);
+  const newTodoObj = {
+    text: newTodo,
+    id: Date.now(),
+  };
+  toDos.push(newTodoObj);
+  paintToDo(newTodoObj);
   saveToDos();
 }
 
